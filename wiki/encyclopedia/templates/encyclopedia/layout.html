@@ -1,7 +1,5 @@
-{% load static %}
-
 <!DOCTYPE html>
-
+{% load static %}
 <html lang="en">
     <head>
         <title>{% block title %}{% endblock %}</title>
@@ -16,7 +14,7 @@
                     <input class="search" type="text" name="q" placeholder="Search Encyclopedia">
                 </form>
                 <div>
-                    <a href="{% url 'index' %}">Home</a>
+                    <a href="{% url 'wiki:index' %}">Home</a>
                 </div>
                 <div>
                     Create New Page

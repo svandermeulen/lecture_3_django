@@ -30,7 +30,6 @@ def index(request):
 
 
 def navigate_to_entry(request, entry: str):
-
     content = util.get_entry(title=entry)
 
     if content is None:
@@ -46,7 +45,6 @@ def navigate_to_entry(request, entry: str):
 
 
 def search(request, query: str):
-
     entries = util.list_entries()
     if query in entries:
         return navigate_to_entry(request, entry=query)
@@ -62,7 +60,6 @@ def search(request, query: str):
 
 
 def new_entry(request):
-
     if request.method == "POST":
 
         form = NewEntryForm(request.POST)
@@ -88,6 +85,48 @@ def new_entry(request):
         "form": NewEntryForm(
             initial={
                 'title': 'Title',
-                'content': 'Content'}
+                'content': 'Content'
+            }
         )
     })
+
+
+def edit_entry(request, entry):
+
+    if request.method == "POST":
+        form = NewEntryForm(request.POST)
+
+        if form.is_valid():
+            title = form.cleaned_data["title"]
+            content = form.cleaned_data["content"]
+            path_save = f'entries/{title}.md'
+            if default_storage.exists(path_save):
+                default_storage.delete(path_save)
+            path_save = default_storage.save(path_save, ContentFile(content))
+            assert default_storage.exists(path_save), f"{path_save} is not correctly saved"
+            return navigate_to_entry(request, entry=entry)
+
+        return render(
+            request,
+            "encyclopedia/edit_entry.html", {
+                "entry": entry,
+                "form": form
+            }
+        )
+
+    content = util.get_entry(title=entry)
+
+    if content is None:
+        raise Http404()
+
+    return render(
+        request,
+        "encyclopedia/edit_entry.html", {
+            "entry": entry,
+            "form": NewEntryForm(
+                initial={
+                    'title': entry,
+                    'content': content.replace("\r", "")
+                }
+            )
+        })

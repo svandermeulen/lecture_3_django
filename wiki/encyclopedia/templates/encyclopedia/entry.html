@@ -6,8 +6,11 @@
 
 {% block body %}
 
-    <hr>
-
     {{ content|safe }}
+
+    <div class="row">
+        <button type="button">
+            <a href="{% url 'wiki:edit_page' entry %}">Edit</a>
+        </button>
 
 {% endblock %}

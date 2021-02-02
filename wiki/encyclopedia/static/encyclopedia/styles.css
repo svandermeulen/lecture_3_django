@@ -8,13 +8,16 @@ code {
 }
 
 h1 {
-    margin-top: 0px;
-    padding-top: 20px;
+    padding-top: 10px;
 }
 
 textarea {
-    height: 90vh;
-    width: 80%;
+    height: 75vh;
+    width: 70%;
+}
+
+.row {
+    padding-left: 10px;
 }
 
 .main {

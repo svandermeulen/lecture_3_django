@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path, include
 
 urlpatterns = [
@@ -21,3 +22,4 @@ urlpatterns = [
     path('wiki/', include("encyclopedia.urls")),
     path('', include("encyclopedia.urls"))
 ]
+urlpatterns += staticfiles_urlpatterns()

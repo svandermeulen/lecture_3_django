@@ -9,8 +9,9 @@
     {{ content|safe }}
 
     <div class="row">
-        <button type="button">
-            <a href="{% url 'wiki:edit_page' entry %}">Edit</a>
-        </button>
+        <a href="{% url "wiki:edit_page" entry %}" class="btn btn-secondary">Edit</a>
+        <a href="{% url "wiki:delete_page" entry %}" class="btn btn-danger" id="delete">Delete</a>
+    </div>
+
 
 {% endblock %}

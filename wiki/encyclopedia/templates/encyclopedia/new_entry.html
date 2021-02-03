@@ -14,10 +14,9 @@
         <div class="row">{{ form.title }}</div>
         <div class="row">{{ form.content }}</div>
         <div class="row">
-            <input type="submit" placeholder="Add" title="Add" value="Add">
+            <input type="submit" class="btn btn-success" title="Save" value="Save">
+            <a href="{% url "wiki:index" %}" class="btn btn-secondary">Cancel</a>
         </div>
     </form>
-    <div class="row">
-        <a href="{% url 'wiki:index' %}">View Pages</a>
-    </div>
+
 {% endblock %}

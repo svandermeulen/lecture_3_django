@@ -1,0 +1,19 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Delete {{ entry }}
+{% endblock %}
+
+{% block body %}
+
+    <form action="{% url 'wiki:delete_page' entry %}" method="post">
+        {% csrf_token %}
+        <h2>Are you sure you want to delete this page?</h2>
+        <div class="row">
+            <input type="submit" value="Yes" class="btn btn-secondary" title="Yes">
+            <a href="{% url "wiki:index" %}" class="btn btn-secondary">No</a>
+        </div>
+    </form>
+
+
+{% endblock %}

@@ -1,4 +1,4 @@
-import os
+import random
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
@@ -92,7 +92,6 @@ def new_entry(request):
 
 
 def edit_entry(request, entry):
-
     if request.method == "POST":
         form = NewEntryForm(request.POST)
 
@@ -101,10 +100,10 @@ def edit_entry(request, entry):
             content = form.cleaned_data["content"]
             path_save = f'entries/{title}.md'
             if default_storage.exists(path_save):
-                default_storage.delete(path_save)
+                default_storage.delete(path_save)  # Delete to simulate overwriting
             path_save = default_storage.save(path_save, ContentFile(content))
             assert default_storage.exists(path_save), f"{path_save} is not correctly saved"
-            return navigate_to_entry(request, entry=entry)
+            return redirect("wiki:entry", entry=entry)
 
         return render(
             request,
@@ -130,3 +129,19 @@ def edit_entry(request, entry):
                 }
             )
         })
+
+
+def delete_entry(request, entry):
+    if request.method == "POST":
+        path_entry = f'entries/{entry}.md'
+        if default_storage.exists(path_entry):
+            default_storage.delete(path_entry)
+        return redirect('wiki:index')
+    return render(request, "encyclopedia/delete_entry.html", {
+        "entry": entry
+    })
+
+
+def get_random_entry(request):
+    entry = random.choice(util.list_entries())
+    return redirect('wiki:entry', entry=entry)

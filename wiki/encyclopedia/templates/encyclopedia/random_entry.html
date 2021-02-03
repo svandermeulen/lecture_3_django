@@ -1,0 +1,16 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block body %}
+    <h1>Random Entry:</h1>
+
+    <form action="{% url 'wiki:new_page' %}" method="post">
+        {% csrf_token %}
+        <div class="row">{{ form.title }}</div>
+        <div class="row">{{ form.content }}</div>
+        <div class="row">
+            <input type="submit" class="btn btn-success" title="Save" value="Save">
+            <a href="{% url "wiki:index" %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+
+{% endblock %}

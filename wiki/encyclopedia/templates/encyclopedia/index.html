@@ -7,12 +7,17 @@
 {% block body %}
     <h1>All Pages</h1>
 
-    <ul>
+    <table style="width:30%">
+        <tr>
+            <th>Title</th>
+            <th>Content</th>
+        </tr>
         {% for entry in entries %}
-            <li>
-                <a href="{% url 'wiki:entry' entry%}">{{ entry }}</a>
-            </li>
+            <tr>
+                <td><a href="{% url 'wiki:entry' entry.title %}">{{ entry }}</a></td>
+                <td>{{ entry.summary }}</td>
+            </tr>
         {% endfor %}
-    </ul>
+    </table>
 
 {% endblock %}

@@ -1,4 +1,3 @@
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
 
 from . import views
@@ -12,7 +11,4 @@ urlpatterns = [
     path("<str:entry>", views.navigate_to_entry, name="entry"),
     path("edit/<str:entry>", views.edit_entry, name="edit_page"),
     path("delete/<str:entry>", views.delete_entry, name="delete_page")
-
 ]
-
-urlpatterns += staticfiles_urlpatterns()

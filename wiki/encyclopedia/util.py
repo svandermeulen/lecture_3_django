@@ -6,11 +6,28 @@ from django.core.files.storage import default_storage
 from markdown2 import Markdown
 
 
+def summarize_entry(entry: str) -> str:
+
+    entry_stripped = entry.strip("\n")  # Remove trailing newlines
+    entry_stripped = re.sub(r"\s{2,}", "\n", entry_stripped).strip("\n")  # Remove trailing spaces
+
+    lines_split = re.split(r"\n|\r", entry_stripped)
+
+    # Skip headers
+    if entry_stripped.startswith("#"):
+        lines_split = lines_split[1:]
+
+    summary = " ".join(lines_split).split(" ")[:5]
+
+    return f"{' '.join(summary)} ..."
+
+
 def list_entries() -> list:
     """
     Returns a list of all names of encyclopedia entries.
     """
     _, filenames = default_storage.listdir("entries")
+    filenames = [f for f in filenames if f.endswith(".md")]
     return list(sorted(re.sub(r"\.md$", "", filename)
                 for filename in filenames if filename.endswith(".md")))
 
@@ -34,8 +51,9 @@ def get_entry(title: str) -> Union[str, None]:
     entry exists, the function returns None.
     """
     try:
-        f = default_storage.open(f"entries/{title}.md")
-        return f.read().decode("utf-8")
+        with default_storage.open(f"entries/{title}.md") as f:
+            entry = f.read().decode("utf-8")
+        return entry.replace("\r", "")
     except FileNotFoundError:
         return None
 

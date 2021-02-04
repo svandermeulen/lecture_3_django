@@ -5,19 +5,23 @@
 {% endblock %}
 
 {% block body %}
-    <h1>All Pages</h1>
+    <h1>{{ title }}</h1>
 
-    <table style="width:30%">
-        <tr>
-            <th>Title</th>
-            <th>Content</th>
-        </tr>
-        {% for entry in entries %}
+    {% if entries %}
+        <table style="width:30%">
             <tr>
-                <td><a href="{% url 'wiki:entry' entry.title %}">{{ entry }}</a></td>
-                <td>{{ entry.summary }}</td>
+                <th>Title</th>
+                <th>Summary</th>
             </tr>
-        {% endfor %}
-    </table>
+            {% for entry in entries %}
+                <tr>
+                    <td><a href="{% url 'wiki:entry' entry.title %}">{{ entry.title }}</a></td>
+                    <td>{{ entry.summary }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        Found no pages
+    {% endif %}
 
 {% endblock %}

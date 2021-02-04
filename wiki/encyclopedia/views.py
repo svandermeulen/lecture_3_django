@@ -9,8 +9,9 @@ from django.urls import reverse
 
 from . import util
 
+from .util import summarize_entry, get_entry
 
-# Add a new task:
+
 class NewEntryForm(Form):
     title = CharField(label="Title")
     content = CharField(widget=Textarea, label="Content")
@@ -21,10 +22,13 @@ def index(request):
     if query is not None:
         return search(request, query=query)
 
+    entries = [{"title": e, "summary": summarize_entry(get_entry(e))} for e in util.list_entries()]
+
     return render(
         request,
         "encyclopedia/index.html", {
-            "entries": util.list_entries()
+            "entries": entries,
+            "title": "All Pages"
         }
     )
 
@@ -50,10 +54,11 @@ def search(request, query: str):
         return navigate_to_entry(request, entry=query)
 
     entries_substring = [entry for entry in entries if query.lower() in entry.lower()]
+    entries_substring = [{"title": e, "summary": summarize_entry(get_entry(e))} for e in entries_substring]
     return render(
         request,
-        "encyclopedia/search_results.html", {
-            "query": query,
+        "encyclopedia/index.html", {
+            "title": f"Search Results for '{query}'",
             "entries": entries_substring
         }
     )
@@ -125,7 +130,7 @@ def edit_entry(request, entry):
             "form": NewEntryForm(
                 initial={
                     'title': entry,
-                    'content': content.replace("\r", "")
+                    'content': content
                 }
             )
         })

@@ -6,9 +6,12 @@ from django.core.files.storage import default_storage
 from markdown2 import Markdown
 
 
-def summarize_entry(entry: str) -> str:
+def summarize_entry(entry_content: str) -> str:
+    """
+    Returns a summary of the content of and entry. It returns the first 5 words of the text (skipping any headings)
+    """
 
-    entry_stripped = entry.strip("\n")  # Remove trailing newlines
+    entry_stripped = entry_content.strip("\n")  # Remove trailing newlines
     entry_stripped = re.sub(r"\s{2,}", "\n", entry_stripped).strip("\n")  # Remove trailing spaces
 
     lines_split = re.split(r"\n|\r", entry_stripped)
